@@ -1,5 +1,5 @@
+const prompt = require("prompt-sync")()
 const bcrypt = require('bcrypt')
-const password = "!12345678Aa"
 
 function checkPasswordRequirements(password) {
     if (password.length < 8) {
@@ -21,23 +21,33 @@ function checkPasswordRequirements(password) {
 }
 
 async function hashPassword(password){
+    console.clear()
     const hashedPass = await bcrypt.hash(password, 10)
-    console.log("Your Password:" + password)
-    console.log("Hash Password:" + hashedPass)
+    console.log("Your Password: " + password)
+    console.log("Hash Password: " + hashedPass)
     compareWithHash(hashedPass, password)
 }
 
 async function compareWithHash(hash, password) {
     const match = await bcrypt.compare(password, hash)
     switch(match){
-        case true: console.log("Password matches hash!"); break
-        default: console.log("Password doesn't matches hash")
+        case true: 
+            console.log('\x1b[32m%s\x1b[0m',">> Password matches hash")
+            break
+        default: console.log('\x1b[31m%s\x1b[0m', "ERROR_2: Password doesn't matches hash")
     }
 }
 
-if (checkPasswordRequirements(password)) {
-    console.log("The password meets the requirements!")
-    hashPassword(password)
-    return;
+function enterPassword(){
+    const password = prompt("Create your password: ")
+    switch (checkPasswordRequirements(password)){
+        case true: hashPassword(password); break
+        default: 
+            console.log('\x1b[31m%s\x1b[0m', "ERROR_1: The password doesn't meet the requirements")
+            enterPassword()
+    }
 }
-else console.log("The password doesn't meet the requirements!!!")
+
+console.clear()
+console.log('\x1b[33m%s\x1b[0m',"PASSWORD REQUIREMENTS:\n1. At least 8 characters\n2. There should be uppercase and lowercase letters\n3. There must be numbers\n4. There must be special characters")
+enterPassword()

@@ -17,5 +17,10 @@
 ```JavaScript
 npm install bcrypt
 ```
+Також:
+```JavaScript
+npm install prompt-sync
+```
 2. Далі вводимо: node "назва_проекту".js;
-2. Оцінити результат.
+3. Придумати пароль згідно вимогам;
+4. Оцінити результат.
